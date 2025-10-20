@@ -2,20 +2,58 @@
   <img src="figs/logo.png" width="50%" />
 </p>
 
-# SongFormer: Scaling Music Structure Analysis with Heterogeneous Supervision
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10-brightgreen"/>
-  <img src="https://img.shields.io/badge/License-CC%20BY%204.0-lightblue"/>
-  <a href="https://github.com/ASLP-lab/SongFormer"><img src="https://img.shields.io/badge/GitHub-SongFormer-black"/></a>
-  <a href="https://huggingface.co/spaces/ASLP-lab/SongFormer"><img src="https://img.shields.io/badge/HuggingFace-space-yellow"/></a>
-  <a href="https://huggingface.co/ASLP-lab/SongFormer"><img src="https://img.shields.io/badge/HuggingFace-model-blue"/></a>
-  <a href="https://huggingface.co/datasets/ASLP-lab/SongFormDB"><img src="https://img.shields.io/badge/HF%20Dataset-SongFormDB-green"/></a>
-  <a href="https://huggingface.co/datasets/ASLP-lab/SongFormBench"><img src="https://img.shields.io/badge/HF%20Dataset-SongFormBench-orange"/></a>
-  <a href="https://discord.gg/rwcqh7Em"><img src="https://img.shields.io/badge/Discord-加入我们-purple?logo=discord&logoColor=white"/></a>
-  <a href="http://www.npu-aslp.org/"><img src="https://img.shields.io/badge/🏫-ASLP-grey?labelColor=lightgrey"/></a>
-</p>
+<h1 align="center">SongFormer: Scaling Music Structure Analysis with Heterogeneous Supervision</h1>
 
-Chunbo Hao<sup>&ast;</sup>, Ruibin Yuan<sup>&ast;</sup>, Jixun Yao, Qixin Deng, Xinyi Bai, Wei Xue, Lei Xie<sup>&dagger;</sup>
+<div align="center">
+
+<div style="text-align: center;">
+  <img src="https://pfst.cf2.poecdn.net/base/image/3edb451ba5a7f21a2883ff2daef0815c5bd5c7551700754d7b1416894aa4213a?pmaid=486214493" alt="Python">  
+  <img src="https://pfst.cf2.poecdn.net/base/image/7c8950244a7e0fa562345fadba0b80f7f2c516aa9b5b4b3440e0543b5ae357fe?pmaid=486214490" alt="License">  
+  <a href="https://arxiv.org/abs/2510.02797">
+    <img src="https://pfst.cf2.poecdn.net/base/image/cfca907eb1c2792af5128a680b48a47bdb0ceb1d1bdea83daff70d1cc34bb10b?pmaid=486214495" alt="arXiv Paper">
+  </a>
+  <a href="https://github.com/ASLP-lab/SongFormer">
+    <img src="https://pfst.cf2.poecdn.net/base/image/7245776690a7a9de76e20f487a1002303b67d43ba6e815707ef5aa0ca460b8c3?pmaid=486214489" alt="GitHub">
+  </a>
+  <a href="https://huggingface.co/spaces/ASLP-lab/SongFormer">
+    <img src="https://pfst.cf2.poecdn.net/base/image/f52d68641dacda8ce41acd49518acc697ea2f08070e6726aaa8160b48838c785?pmaid=486214498" alt="HuggingFace Space">
+  </a>
+  <a href="https://huggingface.co/ASLP-lab/SongFormer">
+    <img src="https://pfst.cf2.poecdn.net/base/image/6211cc78bac4cc37aaa886fa6335032e7aedb5de092b32557b1b4324a1da4dd8?pmaid=486214494" alt="HuggingFace Model">
+  </a>
+  <a href="https://huggingface.co/datasets/ASLP-lab/SongFormDB">
+    <img src="https://pfst.cf2.poecdn.net/base/image/b4b527bba20f316becb731bfa05c26502d726ab97121619afc4c7d359d3596e0?pmaid=486214496" alt="Dataset SongFormDB">
+  </a>
+  <a href="https://huggingface.co/datasets/ASLP-lab/SongFormBench">
+    <img src="https://pfst.cf2.poecdn.net/base/image/21545a56eb4b744383845625bc365964ac071275f36bee985ba563fda55fe28f?pmaid=486214492" alt="Dataset SongFormBench">
+  </a>
+  <a href="https://discord.gg/p5uBryC4Zs">
+    <img src="https://pfst.cf2.poecdn.net/base/image/f82a8fe87ee99b3aa4a5198683a37c0e44a62b8e9eca8a8f64b0590293a8cf12?pmaid=486214491" alt="Discord">
+  </a>
+  <a href="http://www.npu-aslp.org/">
+    <img src="https://img.shields.io/badge/🏫-ASLP-grey?labelColor=lightgrey" alt="lab">
+  </a>
+</div>
+
+</div>
+
+<div align="center">
+  <h3>
+    Chunbo Hao<sup>1*</sup>, Ruibin Yuan<sup>2,5*</sup>, Jixun Yao<sup>1</sup>, Qixin Deng<sup>3,5</sup>,<br>Xinyi Bai<sup>4,5</sup>, Wei Xue<sup>2</sup>, Lei Xie<sup>1†</sup>
+  </h3>
+  
+  <p>
+    <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>†</sup>Corresponding author
+  </p>
+  
+  <p>
+    <sup>1</sup>Audio, Speech and Language Processing Group (ASLP@NPU),<br>Northwestern Polytechnical University<br>
+    <sup>2</sup>Hong Kong University of Science and Technology<br>
+    <sup>3</sup>Northwestern University<br>
+    <sup>4</sup>Cornell University<br>
+    <sup>5</sup>Multimodal Art Projection (M-A-P)
+  </p>
+</div>
 
 ----
 [ [English](README.md) ｜ 中文 ]
@@ -38,15 +76,77 @@ SongFormer 是一种音乐结构分析框架，利用多分辨率的自监督表
 🔥 **2025年9月26日**
 **发布 SongFormDB 与 SongFormBench** – 我们推出了大规模音乐数据集 **SongFormDB** 和综合评测基准 **SongFormBench**，均已上线 Hugging Face，助力音乐结构分析的研究与评估。
 
-## 📋 待办事项清单
+## 🚀 快速开始
 
-- [x] 完成并推送推理代码至 GitHub
-- [x] 上传模型Checkpoint至 Hugging Face Hub
-- [x] 上传论文至 arXiv
-- [x] 修复 README
-- [x] 在 Hugging Face（通过 Inference API 或 Spaces）部署开箱即用的推理版本
-- [x] 开源评估代码
-- [x] 开源训练代码
+该模型支持 Hugging Face 的 from_pretrained 方法。要快速开始使用此代码，您需要完成以下两件事：
+
+1. 按照 `设置 Python 环境` 中的说明配置您的 Python 环境
+2. 访问我们的 [Hugging Face 模型页面](https://huggingface.co/ASLP-lab/SongFormer)，并运行 README 中提供的代码
+
+## 🌟 主要亮点
+
+我们在音乐结构分析方面实现了**突破性的性能**，全面树立了新的基准：
+
+- ✨ 对西方和华语音乐数据集均实现了**最先进的准确性**
+- ⚡ **飞快的推理速度**——超过同类模型
+- 💰 **高性价比**——无需API费用，仅需单块GPU在本地运行
+
+### ⏱️ 速度对比
+
+**整首歌曲处理仅需2-4秒！** 以下是我们的对比表现：
+
+| 模型                   | 处理时间     | 备注            |
+| --------------------- | ------------ | --------------- |
+| **🏆 SongFormer (我们)** | **2-4秒**     |                 |
+| LinkSeg-7Labels        | 3-5秒        |                 |
+| All-In-One             | 9-12秒       |                 |
+| SongPrep Fine-tuned    | 9-12秒       |                 |
+| SongPrep End2End       | 22-26秒      | 包含歌词         |
+| Gemini 2.5 Pro         | 30-90秒      | 包含歌词         |
+
+*测试环境：NVIDIA L40 GPU（不含模型加载时间）*
+
+### 📊 性能指标
+
+- **ACC**：整体边界检测准确率
+- **HR.5F**：0.5秒容忍度下的命中率（细粒度精度）
+- **HR3F**：3秒容忍度下的命中率
+
+#### SongFormBench-HarmonixSet
+
+| 方法                   | ACC       | HR.5F     | HR3F      |
+| ----------------------- | --------- | --------- | --------- |
+| **基线方法**            |           |           |           |
+| Harmonic-CNN*           | 0.680     | 0.559     | —         |
+| SpecTNT (24s)*          | 0.701     | 0.570     | —         |
+| SpecTNT (36s)*          | 0.723     | 0.558     | —         |
+| All-In-One              | 0.740     | 0.596     | 0.730     |
+| MERT (5s)*              | 0.574     | 0.626     | —         |
+| MusicFM-Zhang 等人*     | 0.725     | 0.640     | 0.729     |
+| MuQ_iter*               | 0.772     | —         | —         |
+| LinkSeg-7Labels         | 0.780     | 0.630     | 0.762     |
+| TA (Zhang 等人，2025)* | 0.787     | 0.610     | 0.801     |
+| Gemini 2.5 Pro          | 0.748     | 0.423     | **0.813** |
+| **SongFormer**    |           |           |           |
+| SongFormer (HX)         | 0.795     | **0.703** | 0.784     |
+| SongFormer (HX+P+H)     | 0.806     | 0.697     | 0.780     |
+| SongFormer (HX+P+H+G)   | **0.807** | 0.696     | 0.780     |
+
+#### SongFormBench-CN
+
+| 方法                   | ACC       | HR.5F     | HR3F      |
+| ----------------------- | --------- | --------- | --------- |
+| **基线方法**            |           |           |           |
+| All-In-One              | 0.834     | 0.563     | 0.771     |
+| LinkSeg-7Labels         | 0.828     | 0.518     | 0.757     |
+| Gemini 2.5 Pro          | 0.806     | 0.412     | 0.833     |
+| **SongFormer**    |           |           |           |
+| SongFormer (HX)         | 0.848     | 0.675     | **0.856** |
+| SongFormer (HX+P+H)     | 0.890     | **0.690** | 0.852     |
+| SongFormer (HX+P+H+G)   | **0.891** | 0.688     | 0.851     |
+
+- 标记 * 的结果因无法获取实现而引自原论文
+- 数据集缩写说明：HX (HarmonixSet)，P、H、G代表论文中所声明的不同训练数据集
 
 ## 安装
 
@@ -278,8 +378,16 @@ bash train.sh
 
 如果本项目对您的研究有所帮助，请引用以下内容：
 
-````
-即将更新
+````bibtex
+@misc{hao2025songformer,
+  title         = {SongFormer: Scaling Music Structure Analysis with Heterogeneous Supervision},
+  author        = {Chunbo Hao and Ruibin Yuan and Jixun Yao and Qixin Deng and Xinyi Bai and Wei Xue and Lei Xie},
+  year          = {2025},
+  eprint        = {2510.02797},
+  archivePrefix = {arXiv},
+  primaryClass  = {eess.AS},
+  url           = {https://arxiv.org/abs/2510.02797}
+}
 ````
 
 ## 许可证
