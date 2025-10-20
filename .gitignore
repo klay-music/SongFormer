@@ -52,3 +52,6 @@ cython_debug/
 *.swp
 
 .ruff_cache/
+
+MusicFM/
+SongFormer.safetensors
