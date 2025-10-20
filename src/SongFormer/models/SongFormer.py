@@ -3,7 +3,6 @@ import torch.nn as nn
 import numpy as np
 import torch.nn.functional as F
 from dataset.custom_types import MsaInfo
-from msaf.eval import compute_results
 from postprocessing.functional import postprocess_functional_structure
 from x_transformers import Encoder
 import bisect
@@ -285,6 +284,9 @@ class Model(nn.Module):
         self.function_head = Head(config.transformer_input_dim, config.num_classes)
 
     def cal_metrics(self, gt_info: MsaInfo, msa_info: MsaInfo):
+        # Lazy import msaf - only needed for metrics calculation during training/evaluation
+        from msaf.eval import compute_results
+
         assert gt_info[-1][1] == "end" and msa_info[-1][1] == "end", (
             "gt_info and msa_info should end with 'end'"
         )
