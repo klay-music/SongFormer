@@ -1,5 +1,5 @@
 # Core Deep Learning Framework
-torch==2.4.0
+torch==2.12.0
 torchaudio==2.4.0
 lightning==2.5.1.post0
 
