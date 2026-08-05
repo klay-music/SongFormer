@@ -1,0 +1,86 @@
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AR_URL: https://us-python.pkg.dev/klay-app-463011/klay-python
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Build wheel
+        working-directory: packages/klay-songformer
+        run: uv build --wheel --out-dir dist
+
+      - name: Read package metadata
+        id: pkg
+        working-directory: packages/klay-songformer
+        run: |
+          set -euo pipefail
+          whl=$(ls dist/*.whl)
+          if [ "$(printf '%s\n' "$whl" | wc -l)" -ne 1 ]; then
+            echo "::error::expected exactly one wheel in dist" >&2
+            exit 1
+          fi
+          base=$(basename "$whl")
+          wheel=${base%%-*}
+          rest=${base#*-}
+          version=${rest%%-*}
+          if [ -z "$wheel" ] || [ -z "$version" ]; then
+            echo "::error::could not parse name and version from $base" >&2
+            exit 1
+          fi
+          {
+            echo "version=$version"
+            echo "dist=$(echo "$wheel" | tr '_' '-' | tr '[:upper:]' '[:lower:]')"
+            echo "wheel=$wheel"
+          } >> "$GITHUB_OUTPUT"
+          echo "${wheel} ${version}"
+
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_AR_PUBLISH }}
+          token_format: access_token
+
+      - name: Skip if version already published
+        id: precheck
+        env:
+          AR_TOKEN: ${{ steps.gcp-auth.outputs.access_token }}
+          DIST: ${{ steps.pkg.outputs.dist }}
+          WHEEL: ${{ steps.pkg.outputs.wheel }}
+          VERSION: ${{ steps.pkg.outputs.version }}
+        run: |
+          if curl -sf -u "oauth2accesstoken:${AR_TOKEN}" "${AR_URL}/simple/${DIST}/" \
+              | grep -q "${WHEEL}-${VERSION}-"; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "${DIST} ${VERSION} already in Artifact Registry — nothing to do"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to Artifact Registry
+        if: steps.precheck.outputs.published == 'false'
+        working-directory: packages/klay-songformer
+        env:
+          UV_PUBLISH_USERNAME: oauth2accesstoken
+          UV_PUBLISH_PASSWORD: ${{ steps.gcp-auth.outputs.access_token }}
+        run: |
+          uv publish \
+            --publish-url "${AR_URL}/" \
+            --check-url "${AR_URL}/simple/" \
+            dist/*
