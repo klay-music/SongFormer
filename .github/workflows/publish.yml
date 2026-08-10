@@ -57,21 +57,71 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_AR_PUBLISH }}
           token_format: access_token
 
-      - name: Skip if version already published
+      - name: Download the published wheel if this version already exists
         id: precheck
+        working-directory: packages/klay-songformer
         env:
           AR_TOKEN: ${{ steps.gcp-auth.outputs.access_token }}
           DIST: ${{ steps.pkg.outputs.dist }}
           WHEEL: ${{ steps.pkg.outputs.wheel }}
           VERSION: ${{ steps.pkg.outputs.version }}
         run: |
-          if curl -sf -u "oauth2accesstoken:${AR_TOKEN}" "${AR_URL}/simple/${DIST}/" \
-              | grep -q "${WHEEL}-${VERSION}-"; then
-            echo "published=true" >> "$GITHUB_OUTPUT"
-            echo "${DIST} ${VERSION} already in Artifact Registry — nothing to do"
-          else
+          set -euo pipefail
+          href=$(curl -sf -u "oauth2accesstoken:${AR_TOKEN}" "${AR_URL}/simple/${DIST}/" \
+            | grep -o "https://[^\"#]*/${WHEEL}-${VERSION}-[^\"#]*\.whl" | head -1 || true)
+          if [ -z "$href" ]; then
             echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          echo "published=true" >> "$GITHUB_OUTPUT"
+          curl -sf -u "oauth2accesstoken:${AR_TOKEN}" -L -o published.whl "$href"
+
+      - name: Fail if the published wheel does not match this build
+        if: steps.precheck.outputs.published == 'true'
+        working-directory: packages/klay-songformer
+        env:
+          DIST: ${{ steps.pkg.outputs.dist }}
+          VERSION: ${{ steps.pkg.outputs.version }}
+        run: |
+          python3 - <<'PY'
+          import glob
+          import os
+          import sys
+          import zipfile
+
+          def sources(path):
+              with zipfile.ZipFile(path) as archive:
+                  return {
+                      name: archive.read(name)
+                      for name in archive.namelist()
+                      if name.endswith(".py")
+                  }
+
+          dist = os.environ["DIST"]
+          version = os.environ["VERSION"]
+          built = sources(glob.glob("dist/*.whl")[0])
+          published = sources("published.whl")
+
+          added = sorted(built.keys() - published.keys())
+          removed = sorted(published.keys() - built.keys())
+          changed = sorted(n for n in built.keys() & published.keys() if built[n] != published[n])
+
+          if not (added or removed or changed):
+              print(f"{dist} {version} already in Artifact Registry and identical — nothing to do")
+              sys.exit(0)
+
+          for name in added:
+              print(f"::error::{name} is new in this build")
+          for name in removed:
+              print(f"::error::{name} is gone from this build")
+          for name in changed:
+              print(f"::error::{name} differs from the published {version}")
+          print(
+              f"::error::{dist} {version} is published with different sources. "
+              "Artifact Registry versions are immutable — bump __version__ to ship this."
+          )
+          sys.exit(1)
+          PY
 
       - name: Publish to Artifact Registry
         if: steps.precheck.outputs.published == 'false'
