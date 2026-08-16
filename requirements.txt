@@ -54,7 +54,7 @@ torchmetrics==1.7.1
 
 # Data Processing
 h5py==3.13.0
-pyarrow==19.0.1
+pyarrow==23.0.1
 pillow==11.1.0
 
 # Text Processing
